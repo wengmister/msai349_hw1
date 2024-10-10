@@ -23,3 +23,13 @@ class Node:
         - child_node (Node): The child node to add.
         """
         self.children.append(child_node)
+
+    def __repr__(self):
+      """
+      String representation for easier visualization.
+      """
+      if self.is_leaf:
+          return f"Leaf(label={self.label})"
+      else:
+          return f"Node(attribute={self.attribute}, value={self.value}, children={len(self.children)})"
+

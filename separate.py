@@ -15,7 +15,7 @@ def split_data_by_attribute(data,seperator_attribute):
         sep_att[row[seperator_attribute]].append(row)
     return sep_att
 
-def find_best_attribute_to_split_on(data,attribue_list):
+def find_best_attribute_to_split_on(data):
     """
     Identifies the attribute that minimizes entropy for data splitting.
 

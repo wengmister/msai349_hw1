@@ -3,7 +3,7 @@ import math
 import parse
 from separate import *
 
-def ID3(examples: dict, default):
+def ID3(examples: list, default = 0):
   '''
   Takes in an array of examples, and returns a tree (an instance of Node) 
   trained on the examples.  Each example is a dictionary of attribute:value pairs,
@@ -16,7 +16,7 @@ def ID3(examples: dict, default):
   if classes.count(classes[0]) == len(classes):
       return Node(label=classes[0], is_leaf=True)
 
-  attributes = set(examples.keys())
+  attributes = list(examples[0].keys())[:-1]
 
   # If no attributes are left to split, return a leaf node with the majority class
   if len(attributes) == 0:
@@ -26,9 +26,11 @@ def ID3(examples: dict, default):
   # Find the best attribute to split on (we'll use information gain)
   best_attribute = find_best_attribute_to_split_on(examples)
   root = Node(attribute=best_attribute)
+  print(best_attribute)
 
   # For each value of the best attribute, create a subtree
   attribute_values = set(row[best_attribute] for row in examples)
+  print(attribute_values)
   for value in attribute_values:
       subset = [row for row in examples if row[best_attribute] == value]
       
@@ -37,7 +39,7 @@ def ID3(examples: dict, default):
       child = ID3(subset, new_attributes)
       
       # Add the child node to the root
-      root.add_child(value, child)
+      root.add_child(child)
 
   return root
 
@@ -50,7 +52,7 @@ def prune(node, examples):
   pass
 
 def test(node, examples):
-  '''
+  ''' 
   Takes in a trained tree and a test set of examples.  Returns the accuracy (fraction
   of examples the tree classifies correctly).
   '''
@@ -65,10 +67,11 @@ def evaluate(node, example):
 
 
 def main():
-  tennis_data = parse.parse("tennis.data")
+  tennis_data = parse.parse("mushroom.data")
   print(tennis_data)
   print(len(tennis_data))
-
+  result = ID3(tennis_data, 0)
+  print(result)
 
 if __name__ == "__main__":
   main()
