@@ -1,9 +1,9 @@
 import math
 import parse
 
-def calculate_node_entropy(data, target_attribute='Class'):
+def calculate_entropy(data, target_attribute='Class'):
     """
-    Calculate the entropy of a node based on the target attribute (Class).
+    Calculate the entropy of a node based on the target attribute. Defaults to the Class attribute.
     """
     # Total number of instances in the dataset
     total_count = len(data)
@@ -19,6 +19,7 @@ def calculate_node_entropy(data, target_attribute='Class'):
         if label not in class_counts:
             class_counts[label] = 0
         class_counts[label] += 1
+    print(class_counts)
     
     # Calculate entropy
     entropy = 0.0
@@ -31,4 +32,4 @@ def calculate_node_entropy(data, target_attribute='Class'):
 
 if __name__ == "__main__":
     test_data = parse.parse("tennis.data")
-    print(calculate_node_entropy(test_data))
+    print(calculate_entropy(test_data))

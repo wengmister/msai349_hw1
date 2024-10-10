@@ -33,24 +33,8 @@ def evaluate(node, example):
   pass
 
 
-def calculate_entropy(labels):
-    """
-    Calculate the entropy of a set of labels without using Counter.
-    """
-    # Total number of labels
-    total_count = len(labels)
-    
-    # Get the unique labels
-    unique_labels = set(labels)
-    
-    # Calculate the entropy
-    entropy = 0.0
-    for label in unique_labels:
-        count = labels.count(label)
-        p_i = count / total_count
-        entropy -= p_i * math.log2(p_i)
-    
-    return entropy
+def information_gain(h0, h1):
+  return h0 - h1
 
 
 def main():
