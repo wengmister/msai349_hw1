@@ -33,7 +33,7 @@ def ID3(examples: dict, default):
       subset = [row for row in examples if row[best_attribute] == value]
       
       # Remove the used attribute and recursively build child nodes
-      new_attributes = [attr for attr in attributes if attr != best_attribute]
+      new_attributes = remove_best_att_from_data(examples, best_attribute)
       child = ID3(subset, new_attributes)
       
       # Add the child node to the root
