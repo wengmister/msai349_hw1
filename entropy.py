@@ -32,4 +32,4 @@ def calculate_entropy(data, target_attribute='Class'):
 
 if __name__ == "__main__":
     test_data = parse.parse("mushroom.data")
-    print(calculate_node_entropy(test_data))
+    print(calculate_entropy(test_data))

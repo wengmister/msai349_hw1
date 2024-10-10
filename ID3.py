@@ -1,6 +1,7 @@
 from node import Node
 import math
 import parse
+from seperate import *
 
 def ID3(examples, default):
   '''
@@ -11,10 +12,18 @@ def ID3(examples, default):
 
   default - Default class
   '''
+  classes = [row['Class'] for row in examples]
+  if classes.count(classes[0]) == len(classes):
+      return Node(label=classes[0], is_leaf=True)
 
-  ##
+  # Step 2: If no attributes are left to split, return a leaf node with the majority class
+  if len(attributes) == 0:
+      majority_class = max(set(classes), key=classes.count)
+      return Node(label=majority_class, is_leaf=True)
 
-  pass
+  # Step 3: Find the best attribute to split on (we'll use information gain)
+  best_attribute = choose_best_attribute(data, attributes)
+  root = Node(attribute=best_attribute)
 
 def prune(node, examples):
   '''
