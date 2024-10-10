@@ -27,6 +27,9 @@ def find_best_attribute_to_split_on(data,attribue_list):
     smallest_H = 1
     chosen_att = ""
 
+    #Assume the all of the examples has all of the attributes (even if unkown)
+    attribue_list = list(data[0].keys())[:-1]
+
     for att in attribue_list:
         
         seg_data = split_data_by_attribute(data,att)
@@ -42,3 +45,16 @@ def find_best_attribute_to_split_on(data,attribue_list):
             chosen_att = att
     
     return chosen_att
+
+def remove_best_att_from_data(data,best_att):
+
+    new_data = []
+    for row in data:
+        new_row = {}
+        for att in row.keys():
+            if (att == best_att):
+                continue
+            new_row[att] = row[att]
+        new_data.append(new_row)
+    
+    return new_data
