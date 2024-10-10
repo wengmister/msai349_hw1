@@ -19,7 +19,7 @@ def calculate_entropy(data, target_attribute='Class'):
         if label not in class_counts:
             class_counts[label] = 0
         class_counts[label] += 1
-    print(class_counts)
+    #print(class_counts)
     
     # Calculate entropy
     entropy = 0.0
@@ -31,10 +31,5 @@ def calculate_entropy(data, target_attribute='Class'):
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-    test_data = parse.parse("tennis.data")
-    print(calculate_entropy(test_data))
-=======
     test_data = parse.parse("mushroom.data")
     print(calculate_node_entropy(test_data))
->>>>>>> a7838c9 (added seprate.py and mushroom.data)

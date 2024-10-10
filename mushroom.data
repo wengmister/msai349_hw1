@@ -1,5 +1,5 @@
-Color, Size , Points ,Class
-red,  small,  yes,    toxic
+Color,Size,Points,Class
+red,small,yes,toxic
 brown,small,no,eatable
 brown,large,yes,eatable
 green,small,no,eatable
