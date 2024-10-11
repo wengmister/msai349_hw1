@@ -9,7 +9,7 @@ class Node:
         - label (str/int): The class label (for leaf nodes).
         - is_leaf (bool): True if the node is a leaf node (i.e., no further splitting).
         """
-        self.label = None
+        self.label = label
         self.children = []
         self.attribute = attribute    # The feature to split on
         self.value = value            # The value of the parent node's attribute (for children)

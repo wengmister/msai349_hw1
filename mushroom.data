@@ -1,6 +1,6 @@
-Color,Size,Points,Class
-red,small,yes,toxic
-brown,small,no,eatable
-brown,large,yes,eatable
-green,small,no,eatable
-red,large,no,eatable
+Points,Color,Size,Class
+yes,red,small,toxic
+no,brown,small,eatable
+yes,brown,large,eatable
+no,green,small,eatable
+no,red,large,eatable
