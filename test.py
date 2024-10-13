@@ -2,7 +2,7 @@ import math
 from ID3 import *
 import parse
 
-data = parse.parse("mushroom.data")
+data = parse.parse("tennis.data")
 result = ID3(data, 0)
 result.print_tree()
 

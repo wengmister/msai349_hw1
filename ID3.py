@@ -33,11 +33,17 @@ def ID3(examples: list, default = 0):
      return Node(value=default,is_leaf=True)
   root = Node(attribute=best_attribute)
 
-  # For each value of the best attribute, create a subtree
-  attribute_values = set(row[best_attribute] for row in examples)
+  # create a set of all possible values for the best attribute to split on
+  attribute_values = set()
+  for row in examples:
+      attribute_values.add(row[best_attribute])
 
   for value in attribute_values:
-      subset = [row for row in examples if row[best_attribute] == value]
+      # find matching examples with best attribute = value
+      subset = []
+      for row in examples:
+          if row[best_attribute] == value:
+              subset.append(row)
       
       # Remove the used attribute and recursively build child nodes
       new_data = remove_best_att_from_data(subset, best_attribute)
