@@ -82,10 +82,10 @@ def evaluate(node, example):
 
 
 def main():
-  tennis_data = parse.parse("mushroom.data")
-  print(tennis_data)
-  print(len(tennis_data))
-  result = ID3(tennis_data, 0)
+  test_data = parse.parse("mushroom.data")
+  print(test_data)
+  print(len(test_data))
+  result = ID3(test_data, 0)
   print(result)
 
 if __name__ == "__main__":
