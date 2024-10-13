@@ -28,6 +28,9 @@ def ID3(examples: list, default = 0):
 
   # Find the best attribute to split on (we'll use information gain)
   best_attribute = find_best_attribute_to_split_on(examples)
+  #If there is none, return the default one
+  if (best_attribute == ""):
+     return Node(value=default,is_leaf=True)
   root = Node(attribute=best_attribute)
 
   # For each value of the best attribute, create a subtree
@@ -37,8 +40,8 @@ def ID3(examples: list, default = 0):
       subset = [row for row in examples if row[best_attribute] == value]
       
       # Remove the used attribute and recursively build child nodes
-      new_attributes = remove_best_att_from_data(examples, best_attribute)
-      child = ID3(subset, new_attributes)
+      new_data = remove_best_att_from_data(subset, best_attribute)
+      child = ID3(new_data)
       child.value = value
       # Add the child node to the root
       root.add_child(child)

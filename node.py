@@ -29,7 +29,7 @@ class Node:
       String representation for easier visualization.
       """
       if self.is_leaf:
-          return f"Leaf(label={self.label},{self.value})"
+          return f"Leaf(label={self.label},value = {self.value})"
       else:
           return f"Node(attribute={self.attribute}, value={self.value}, children={len(self.children)})"
       

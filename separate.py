@@ -30,6 +30,8 @@ def find_best_attribute_to_split_on(data):
     #Assume the all of the examples has all of the attributes (even if unkown)
     attribue_list = list(data[0].keys())[:-1]
 
+    if (len(attribue_list) == 1): return attribue_list[0]
+
     for att in attribue_list:
         
         seg_data = split_data_by_attribute(data,att)
