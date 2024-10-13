@@ -29,7 +29,25 @@ class Node:
       String representation for easier visualization.
       """
       if self.is_leaf:
-          return f"Leaf(label={self.label})"
+          return f"Leaf(label={self.label},{self.value})"
       else:
           return f"Node(attribute={self.attribute}, value={self.value}, children={len(self.children)})"
+      
+    def print_tree(self, depth=0):
+        """
+        (Recursively) print the whole ID3.
+
+        - node - The root node of the decision tree.
+        - depth - The current depth.
+        """
+        indent = "  " * depth
+        
+        if (self.children):
+            connector = "├── "
+        else:
+            connector = "└── "
+        print(f"{indent}{connector}{self.__repr__()}")
+        if (self.is_leaf): return      
+        for child in self.children:
+            child.print_tree(depth + 1)
 

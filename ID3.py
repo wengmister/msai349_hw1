@@ -13,12 +13,15 @@ def ID3(examples: list, default = 0):
   default - Default class
   '''
   classes = [row['Class'] for row in examples]
+
+  #Check homogeneity
   if classes.count(classes[0]) == len(classes):
-      return Node(label=classes[0], is_leaf=True)
+      return Node(label=classes[0],value = classes[0] ,is_leaf=True)
+  
+  #Get a list of attributes
+  attributes = list(examples[0].keys())[:-1] #exclude the last one, which is the class
 
-  attributes = list(examples[0].keys())[:-1]
-
-  # If no attributes are left to split, return a leaf node with the majority class
+  # If no attributes are left, return a leaf node with the majority class
   if len(attributes) == 0:
       majority_class = max(set(classes), key=classes.count)
       return Node(label=majority_class, is_leaf=True)
@@ -26,18 +29,17 @@ def ID3(examples: list, default = 0):
   # Find the best attribute to split on (we'll use information gain)
   best_attribute = find_best_attribute_to_split_on(examples)
   root = Node(attribute=best_attribute)
-  print(best_attribute)
 
   # For each value of the best attribute, create a subtree
   attribute_values = set(row[best_attribute] for row in examples)
-  print(attribute_values)
+
   for value in attribute_values:
       subset = [row for row in examples if row[best_attribute] == value]
       
       # Remove the used attribute and recursively build child nodes
       new_attributes = remove_best_att_from_data(examples, best_attribute)
       child = ID3(subset, new_attributes)
-      
+      child.value = value
       # Add the child node to the root
       root.add_child(child)
 
@@ -63,7 +65,17 @@ def evaluate(node, example):
   Takes in a tree and one example.  Returns the Class value that the tree
   assigns to the example.
   '''
-  pass
+
+  if (node.is_leaf):
+     return node.label
+  
+  attribute_value = example[node.attribute]
+
+  # Find the child node that corresponds to this attribute value
+  for child in node.children:
+      if (child.value == attribute_value):
+          return evaluate(child, example) 
+  
 
 
 def main():

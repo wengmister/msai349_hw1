@@ -38,8 +38,6 @@ def find_best_attribute_to_split_on(data):
         for att_type in seg_data.keys():
             this_H += 1.0*calculate_entropy(seg_data[att_type]) * len(seg_data[att_type])/len(data)
 
-        print(f"{att}: {this_H}")
-
         if(this_H < smallest_H):
             smallest_H = this_H
             chosen_att = att
