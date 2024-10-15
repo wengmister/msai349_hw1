@@ -62,21 +62,31 @@ def prune(node, examples):
   '''
   pass
 
+
 def test(node, examples):
   ''' 
   Takes in a trained tree and a test set of examples.  Returns the accuracy (fraction
   of examples the tree classifies correctly).
   '''
-  pass
+  num_success_prediction = 0
+  num_prediction = 0
+  for example in examples:
+    gt = example['Class']
+    predict = evaluate(node, example)
+    if(gt == predict):
+      num_success_prediction += 1
+    num_prediction += 1
+  accuracy = num_success_prediction / num_prediction
+  return accuracy
+
 
 def evaluate(node, example):
   '''
   Takes in a tree and one example.  Returns the Class value that the tree
   assigns to the example.
   '''
-
   if (node.is_leaf):
-     return node.label
+    return node.label
   
   attribute_value = example[node.attribute]
 
@@ -88,11 +98,19 @@ def evaluate(node, example):
 
 
 def main():
-  test_data = parse.parse("mushroom.data")
-  print(test_data)
-  print(len(test_data))
-  result = ID3(test_data, 0)
-  print(result)
+  training_data = parse.parse("candy.data")
+  # print(test_data)
+  # print(len(test_data))
+  print("Training...")
+  result = ID3(training_data, 0)
+  print("Trained a decision tree:")
+  result.print_tree()
+  print("")
+
+  print("Testing...")
+  testing_data = parse.parse("candy.data")
+  accuracy = test(result, testing_data)
+  print("Accuracy: "+str(accuracy))
 
 if __name__ == "__main__":
   main()
