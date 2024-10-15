@@ -7,14 +7,9 @@ test_ = parse.parse("cars_test.data")
 result = ID3(train, "unacc")
 result.print_tree()
 
-tes = 0
+acc = test(node = result, examples=test_)
 
-for line in test_:
-   if (not evaluate(result,line) == line["Class"]):
-      evaluate(result,line) == line["Class"]
-   tes += 1 if evaluate(result, line) == line["Class"] else 0
-
-print(f"acc : {100.0*tes/len(test_)}")
+print(f"acc : {100.0*acc:.2f}%")
 
 #my_line = {'Outlook': '0', 'Temperature': '1', 'Humidity': '0', 'Wind': '0'}
 

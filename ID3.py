@@ -76,6 +76,7 @@ def test(node, examples):
   Takes in a trained tree and a test set of examples.  Returns the accuracy (fraction
   of examples the tree classifies correctly).
   '''
+<<<<<<< HEAD
   num_success_prediction = 0
   num_prediction = 0
   for example in examples:
@@ -87,6 +88,15 @@ def test(node, examples):
   accuracy = num_success_prediction / num_prediction
   return accuracy
 
+=======
+  tes = 0
+  for line in examples:
+   if (not evaluate(node,line) == line["Class"]):
+      evaluate(node,line) == line["Class"]
+   tes += 1 if evaluate(node, line) == line["Class"] else 0
+  
+  return 1.0*tes/len(examples)
+>>>>>>> 773c25d (made changes pulling)
 
 def evaluate(node, example):
   '''
