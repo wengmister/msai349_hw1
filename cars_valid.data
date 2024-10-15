@@ -4,7 +4,6 @@ high,med,55+,2,small,med,unacc
 high,vhigh,3,5+,small,med,unacc
 med,vhigh,55+,4,big,med,acc
 vhigh,high,3,4,big,med,unacc
-low,med,2,5+,big,high,vgood
 high,vhigh,55+,4,big,high,unacc
 med,vhigh,3,4,big,low,unacc
 med,vhigh,3,2,med,low,unacc
@@ -27,10 +26,8 @@ vhigh,vhigh,4,2,big,high,unacc
 med,vhigh,3,5+,big,low,unacc
 high,high,55+,2,med,med,unacc
 vhigh,low,3,4,small,high,acc
-low,low,3,5+,small,high,good
 low,high,2,5+,small,high,unacc
 vhigh,low,55+,4,med,low,unacc
-low,high,4,5+,med,high,vgood
 high,low,2,4,big,high,acc
 high,vhigh,2,5+,med,low,unacc
 med,high,55+,4,small,med,unacc

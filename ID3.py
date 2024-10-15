@@ -108,7 +108,7 @@ def main():
   print("")
 
   print("Testing...")
-  testing_data = parse.parse("cars_valid.data")
+  testing_data = parse.parse("cars_test.data")
   accuracy = test(result, testing_data)
   print("Accuracy: "+str(accuracy))
 
