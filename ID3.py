@@ -98,7 +98,7 @@ def evaluate(node, example):
 
 
 def main():
-  training_data = parse.parse("candy.data")
+  training_data = parse.parse("cars_train.data")
   # print(test_data)
   # print(len(test_data))
   print("Training...")
@@ -108,7 +108,7 @@ def main():
   print("")
 
   print("Testing...")
-  testing_data = parse.parse("candy.data")
+  testing_data = parse.parse("cars_valid.data")
   accuracy = test(result, testing_data)
   print("Accuracy: "+str(accuracy))
 

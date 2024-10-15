@@ -25,7 +25,8 @@ def calculate_entropy(data, target_attribute='Class'):
     entropy = 0.0
     for count in class_counts.values():
         p_i = count / total_count
-        entropy -= p_i * math.log2(p_i)
+        # entropy -= p_i * math.log2(p_i)
+        entropy -= p_i * math.log(p_i, 2)
     
     return entropy
 
