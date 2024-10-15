@@ -30,7 +30,7 @@ def ID3(examples: list, default = 0):
   best_attribute = find_best_attribute_to_split_on(examples)
   #If there is none, return the default one
   if (best_attribute == ""):
-     return Node(value=default,is_leaf=True)
+     return Node(label=default, is_leaf=True)
   root = Node(attribute=best_attribute)
 
   # create a set of all possible values for the best attribute to split on
@@ -44,10 +44,10 @@ def ID3(examples: list, default = 0):
       for row in examples:
           if row[best_attribute] == value:
               subset.append(row)
-      
+
       # Remove the used attribute and recursively build child nodes
       new_data = remove_best_att_from_data(subset, best_attribute)
-      child = ID3(new_data)
+      child = ID3(new_data, default=default)
       child.value = value
       # Add the child node to the root
       root.add_child(child)
@@ -102,7 +102,7 @@ def main():
   # print(test_data)
   # print(len(test_data))
   print("Training...")
-  result = ID3(training_data, 0)
+  result = ID3(training_data, default="0")
   print("Trained a decision tree:")
   result.print_tree()
   print("")
