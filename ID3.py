@@ -19,7 +19,11 @@ def ID3(examples: list, default = 0):
       return Node(label=classes[0],value = classes[0] ,is_leaf=True)
   
   #Get a list of attributes
-  attributes = list(examples[0].keys())[:-1] #exclude the last one, which is the class
+  attributes = list(examples[0].keys())
+
+  # Remove the last attribute (class label)
+  attributes.remove('Class')
+
 
   # If no attributes are left, return a leaf node with the majority class
   if len(attributes) == 0:
