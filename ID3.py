@@ -12,7 +12,10 @@ def ID3(examples: list, default = 0):
 
   default - Default class
   '''
-  classes = [row['Class'] for row in examples]
+  # get a list of all the class labels
+  classes = []
+  for row in examples:
+      classes.append(row['Class'])
 
   #Check homogeneity
   if classes.count(classes[0]) == len(classes):
@@ -102,7 +105,7 @@ def evaluate(node, example):
 
 
 def main():
-  training_data = parse.parse("cars_train.data")
+  training_data = parse.parse("tennis.data")
   # print(test_data)
   # print(len(test_data))
   print("Training...")
@@ -112,7 +115,7 @@ def main():
   print("")
 
   print("Testing...")
-  testing_data = parse.parse("cars_test.data")
+  testing_data = parse.parse("tennis.data")
   accuracy = test(result, testing_data)
   print("Accuracy: "+str(accuracy))
 
