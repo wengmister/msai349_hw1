@@ -16,6 +16,7 @@ def ID3(examples: list, default = 0):
   classes = []
   for row in examples:
       classes.append(row['Class'])
+  unique_class = len(set(classes))
 
   #Check homogeneity
   if classes.count(classes[0]) == len(classes):
@@ -34,7 +35,7 @@ def ID3(examples: list, default = 0):
       return Node(label=majority_class, is_leaf=True)
 
   # Find the best attribute to split on (we'll use information gain)
-  best_attribute = find_best_attribute_to_split_on(examples)
+  best_attribute = find_best_attribute_to_split_on(examples, unique_class)
   #If there is none, return the default one
   if (best_attribute == ""):
      return Node(label=default, is_leaf=True)
@@ -105,9 +106,7 @@ def evaluate(node, example):
 
 
 def main():
-  training_data = parse.parse("tennis.data")
-  # print(test_data)
-  # print(len(test_data))
+  training_data = parse.parse("cars_train_orig.data")
   print("Training...")
   result = ID3(training_data, default="0")
   print("Trained a decision tree:")
@@ -115,7 +114,7 @@ def main():
   print("")
 
   print("Testing...")
-  testing_data = parse.parse("tennis.data")
+  testing_data = parse.parse("cars_test_orig.data")
   accuracy = test(result, testing_data)
   print("Accuracy: "+str(accuracy))
 

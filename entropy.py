@@ -1,7 +1,7 @@
 import math
 import parse
 
-def calculate_entropy(data, target_attribute='Class'):
+def calculate_entropy(data, number_of_classes, target_attribute='Class'):
     """
     Calculate the entropy of a node based on the target attribute. Defaults to the Class attribute.
     """
@@ -26,7 +26,7 @@ def calculate_entropy(data, target_attribute='Class'):
     for count in class_counts.values():
         p_i = count / total_count
         # entropy -= p_i * math.log2(p_i)
-        entropy -= p_i * math.log(p_i, 2)
+        entropy -= p_i * math.log(p_i, number_of_classes)
     
     return entropy
 

@@ -15,7 +15,7 @@ def split_data_by_attribute(data,seperator_attribute):
         sep_att[row[seperator_attribute]].append(row)
     return sep_att
 
-def find_best_attribute_to_split_on(data):
+def find_best_attribute_to_split_on(data, number_of_classes = 2):
     """
     Identifies the attribute that minimizes entropy for data splitting.
 
@@ -38,7 +38,7 @@ def find_best_attribute_to_split_on(data):
 
         this_H = 0.0
         for att_type in seg_data.keys():
-            this_H += 1.0*calculate_entropy(seg_data[att_type]) * len(seg_data[att_type])/len(data)
+            this_H += 1.0*calculate_entropy(seg_data[att_type], number_of_classes) * len(seg_data[att_type])/len(data)
 
         if(this_H < smallest_H):
             smallest_H = this_H
