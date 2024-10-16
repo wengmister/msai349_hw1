@@ -24,9 +24,10 @@ def get_learning_curve_data(examples_sizes,train_data,test_data,prune = False,de
 
 def plot_learning_curve(example_sizes, acc_values):
 
-    plt.plot(example_sizes,acc_values*100)
+    plt.plot(example_sizes,acc_values*100, label = 'Training data')
     plt.xlabel("Number of examples")
     plt.ylabel("Training accuracy [%]")
+    
     plt.grid()
     plt.show()
     
