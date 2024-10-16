@@ -95,9 +95,11 @@ def prune(node: Node, examples):
 
 
   # Post-order traversal: prune children first
-  if not node.is_leaf:
-      for child in node.children:
-          prune(child, examples)
+  if node.is_leaf:
+    return
+  else:
+    for child in node.children:
+        prune(child, examples)
 
   # Evaluate accuracy before pruning
   current_accuracy = test(node, examples)
@@ -167,11 +169,11 @@ def main():
   VALIDATION = True
 
   data = parse.parse("house_votes_84.data")
-
   training_data = data[:300]        # First 300 rows
-  print(training_data)
   validation_data = data[300:400]   # Next 100 rows
   testing_data = data[400:] 
+
+  # training_data = parse.parse("cars_train.data")
 
   print("Training...")
   result = ID3(training_data, default="republican")
@@ -193,7 +195,7 @@ def main():
   else:
 
     print("Testing...")
-    testing_data = parse.parse("cars_test.data")
+    # testing_data = parse.parse("cars_test.data")
     accuracy = test(result, testing_data)
     print("Accuracy: "+str(accuracy))
 
