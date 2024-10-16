@@ -26,7 +26,7 @@ def plot_learning_curve(example_sizes, acc_values):
 
     plt.plot(example_sizes,acc_values*100)
     plt.xlabel("Number of examples")
-    plt.xlabel("Trainng accuracy [%]")
+    plt.ylabel("Training accuracy [%]")
     plt.grid()
     plt.show()
     
