@@ -29,11 +29,3 @@ def plot_learning_curve(example_sizes, acc_values):
     plt.grid()
     plt.show()
     
-
-example_size = np.arange(10,32,1)
-test_data = parse.parse("cars_test.data")
-train_data = parse.parse("cars_train.data")
-
-learn_curve = get_learning_curve_data(examples_sizes=example_size,train_data=train_data,test_data=test_data,default = "unacc")
-
-plot_learning_curve(example_size,learn_curve)
