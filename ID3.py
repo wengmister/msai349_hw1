@@ -70,61 +70,15 @@ def prune(node: Node, examples):
   Strategy chosen:
   - Reduced error pruning, remove the node and replace with leaf to see if it improves validation accuracy
   '''
+  # If leaf - stopping condition
+  if (node.is_leaf) : return
 
-  def get_most_common_label(dataset):
-      """
-      Finds the most common class label in the dataset without using Counter.
-      """
-      label_count = {}
-      for example in dataset:
-          label = example['Class']
-          if label in label_count:
-              label_count[label] += 1
-          else:
-              label_count[label] = 1
-      
-      # Find the label with the maximum count
-      most_common_label = None
-      max_count = 0
-      for label, count in label_count.items():
-          if count > max_count:
-              max_count = count
-              most_common_label = label
-      
-      return most_common_label
-
-
-  # Post-order traversal: prune children first
-  if node.is_leaf:
-    return
-  else:
-    for child in node.children:
-        prune(child, examples)
-
-  # Evaluate accuracy before pruning
-  current_accuracy = test(node, examples)
-  original_children = node.children
-  original_is_leaf = node.is_leaf
-  original_label = node.label
-
-  # Attempt to prune the current node by making it a leaf node
-  node.is_leaf = True
-  node.label = get_most_common_label(examples)
-  node.children = []
-
-  # Evaluate accuracy after pruning
-  pruned_accuracy = test(node, examples)
-  print(f"Pruned accuracy: {pruned_accuracy}, Current accuracy: {current_accuracy}")
-
-  # If pruning reduces accuracy, revert the changes
-  if pruned_accuracy < current_accuracy:
-      node.is_leaf = original_is_leaf
-      node.label = original_label
-      node.children = original_children
-      print("Reverted node: ", node.attribute)
-  else:
-      print("Pruned node: ", node.attribute)
-    
+  # Check if making the node a leaf makes the accuracy better
+  ## Find the most common label
+  common_label = get_most_common_label()
+  
+  
+  
 
 
 def test(node, examples):

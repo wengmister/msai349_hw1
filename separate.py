@@ -64,3 +64,26 @@ def remove_best_att_from_data(data,best_att):
         new_data.append(new_row)
     
     return new_data
+
+def get_most_common_label(node):
+
+    # Get a list of labels and their occurrence
+    labels_count = {}
+    for child in node.children:
+        if (child.label not in labels_count):
+            labels_count[child.label] = 0
+            
+        labels_count[child.label] += 1 
+
+    # Find the most common one
+    
+    most_common = labels_count.keys()[0]
+    occ = labels_count[most_common]
+
+    for label in labels_count.keys():
+        if (labels_count[label] > occ):
+            most_common = label
+    return most_common
+
+
+  
