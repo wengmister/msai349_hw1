@@ -18,3 +18,5 @@ def get_learning_curve_data(examples_sizes,test_data,prune = False,default = 0):
         acc_values.append(ID3.test(node= this_examples,examples=test_data))
     
     return np.array(acc_values)
+
+example_size = np.arange(10,300,1)
