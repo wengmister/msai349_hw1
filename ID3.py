@@ -63,12 +63,66 @@ def ID3(examples: list, default = 0, attributes_random_sample_ratio=1.0):
   return root
 
 
-def prune(node, examples):
+def prune(node: Node, examples):
   '''
   Takes in a trained tree and a validation set of examples.  Prunes nodes in order
-  to improve accuracy on the validation data; the precise pruning strategy is up to you.
+  to improve accuracy on the validation data;
+  Strategy chosen:
+  - Reduced error pruning, remove the node and replace with leaf to see if it improves validation accuracy
   '''
-  pass
+
+  def get_most_common_label(dataset):
+      """
+      Finds the most common class label in the dataset without using Counter.
+      """
+      label_count = {}
+      for example in dataset:
+          label = example['Class']
+          if label in label_count:
+              label_count[label] += 1
+          else:
+              label_count[label] = 1
+      
+      # Find the label with the maximum count
+      most_common_label = None
+      max_count = 0
+      for label, count in label_count.items():
+          if count > max_count:
+              max_count = count
+              most_common_label = label
+      
+      return most_common_label
+
+
+  # Post-order traversal: prune children first
+  if not node.is_leaf:
+      for child in node.children:
+          prune(child, examples)
+
+  # Evaluate accuracy before pruning
+  current_accuracy = test(node, examples)
+  original_children = node.children
+  original_is_leaf = node.is_leaf
+  original_label = node.label
+
+  # Attempt to prune the current node by making it a leaf node
+  node.is_leaf = True
+  node.label = get_most_common_label(examples)
+  node.children = []
+
+  # Evaluate accuracy after pruning
+  pruned_accuracy = test(node, examples)
+  print(f"Pruned accuracy: {pruned_accuracy}, Current accuracy: {current_accuracy}")
+
+  # If pruning reduces accuracy, revert the changes
+  if pruned_accuracy < current_accuracy:
+      node.is_leaf = original_is_leaf
+      node.label = original_label
+      node.children = original_children
+      print("Reverted node: ", node.attribute)
+  else:
+      print("Pruned node: ", node.attribute)
+    
 
 
 def test(node, examples):
@@ -96,7 +150,7 @@ def evaluate(node, example):
   '''
   Takes in a tree and one example.  Returns the Class value that the tree
   assigns to the example.
-  '''
+  '''  
   if (node.is_leaf):
     return node.label
   
@@ -110,19 +164,38 @@ def evaluate(node, example):
 
 
 def main():
-  training_data = parse.parse("cars_train.data")
-  print(calculate_entropy(training_data, 2))
+  VALIDATION = True
+
+  data = parse.parse("house_votes_84.data")
+
+  training_data = data[:300]        # First 300 rows
+  print(training_data)
+  validation_data = data[300:400]   # Next 100 rows
+  testing_data = data[400:] 
 
   print("Training...")
-  result = ID3(training_data, default="0")
+  result = ID3(training_data, default="republican")
   print("Trained a decision tree:")
   result.print_tree()
   print("")
 
-  print("Testing...")
-  testing_data = parse.parse("cars_train.data")
-  accuracy = test(result, testing_data)
-  print("Accuracy: "+str(accuracy))
+  if VALIDATION == True:
+    # validation_data = parse.parse("cars_valid.data")
+    prune(result, validation_data)
+    print("")
+    result.print_tree()
+
+    print("Testing pruned tree")
+    # testing_data = parse.parse("cars_test.data")
+    accuracy = test(result, testing_data)
+    print("Accuracy: "+str(accuracy))
+
+  else:
+
+    print("Testing...")
+    testing_data = parse.parse("cars_test.data")
+    accuracy = test(result, testing_data)
+    print("Accuracy: "+str(accuracy))
 
 if __name__ == "__main__":
   main()
