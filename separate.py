@@ -28,7 +28,8 @@ def find_best_attribute_to_split_on(data, number_of_classes = 2):
     chosen_att = ""
 
     #Assume the all of the examples has all of the attributes (even if unkown)
-    attribue_list = list(data[0].keys())[:-1]
+    attribue_list = list(data[0].keys())
+    attribue_list.remove("Class")
 
     if (len(attribue_list) == 1): return attribue_list[0], 0
 

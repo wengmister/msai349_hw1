@@ -2,9 +2,10 @@ import math
 from ID3 import *
 import parse
 
-train = parse.parse("cars_train.data")
-test_ = parse.parse("cars_test.data")
-result = ID3(train, "unacc")
+train = parse.parse("house_votes_84.data")[:-200]
+test_ = parse.parse("house_votes_84.data")[-201:]
+print(len(train),len(test_))
+result = ID3(train, "democrat")
 result.print_tree()
 
 acc = test(node = result, examples=test_)

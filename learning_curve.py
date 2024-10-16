@@ -1,7 +1,6 @@
 import ID3
 from random import sample
 import numpy as np
-import parse
 from matplotlib import pyplot as plt
 
 def get_learning_curve_data(examples_sizes,train_data,test_data,prune = False,default = 0):
