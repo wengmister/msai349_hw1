@@ -16,6 +16,8 @@ def get_learning_curve_data(examples_sizes,train_data,test_data,prune = False,de
         this_examples = sample(train_data,size)
         #Train the tree
         this_tree = ID3.ID3(this_examples,default=default)
+        if (prune):
+            this_tree = ID3.prune(this_tree,this_examples)
         acc_values.append(ID3.test(node= this_tree,examples=test_data))
     
     return np.array(acc_values)
