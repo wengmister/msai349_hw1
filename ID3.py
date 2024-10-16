@@ -1,5 +1,4 @@
 from node import Node
-import math
 import parse
 from separate import *
 
@@ -20,7 +19,7 @@ def ID3(examples: list, default = 0):
 
   #Check homogeneity
   if classes.count(classes[0]) == len(classes):
-      return Node(label=classes[0],value = classes[0] ,is_leaf=True)
+      return Node(label=classes[0], node_info_gain= 0, value = classes[0] ,is_leaf=True)
   
   #Get a list of attributes
   attributes = list(examples[0].keys())
@@ -32,15 +31,16 @@ def ID3(examples: list, default = 0):
   # If no attributes are left, return a leaf node with the majority class
   if len(attributes) == 0:
       majority_class = max(set(classes), key=classes.count)
-      return Node(label=majority_class, is_leaf=True)
+      return Node(label=majority_class, node_info_gain=0, is_leaf=True)
 
   # Find the best attribute to split on (we'll use information gain)
-  best_attribute = find_best_attribute_to_split_on(examples, unique_class)
+  best_attribute, info_gain = find_best_attribute_to_split_on(examples, unique_class)
   #If there is none, return the default one
   if (best_attribute == ""):
-     return Node(label=default, is_leaf=True)
-  root = Node(attribute=best_attribute)
-
+     return Node(label=default, node_info_gain = info_gain, is_leaf=True)
+  root = Node(attribute=best_attribute, node_info_gain=info_gain)
+  # root.print_tree()
+   
   # create a set of all possible values for the best attribute to split on
   attribute_values = set()
   for row in examples:
@@ -106,7 +106,9 @@ def evaluate(node, example):
 
 
 def main():
-  training_data = parse.parse("cars_train_orig.data")
+  training_data = parse.parse("cars_train.data")
+  print(calculate_entropy(training_data, 2))
+
   print("Training...")
   result = ID3(training_data, default="0")
   print("Trained a decision tree:")
@@ -114,7 +116,7 @@ def main():
   print("")
 
   print("Testing...")
-  testing_data = parse.parse("cars_test_orig.data")
+  testing_data = parse.parse("cars_train.data")
   accuracy = test(result, testing_data)
   print("Accuracy: "+str(accuracy))
 

@@ -30,7 +30,9 @@ def find_best_attribute_to_split_on(data, number_of_classes = 2):
     #Assume the all of the examples has all of the attributes (even if unkown)
     attribue_list = list(data[0].keys())[:-1]
 
-    if (len(attribue_list) == 1): return attribue_list[0]
+    if (len(attribue_list) == 1): return attribue_list[0], 0
+
+    current_entropy = calculate_entropy(data, number_of_classes)
 
     for att in attribue_list:
         
@@ -44,7 +46,10 @@ def find_best_attribute_to_split_on(data, number_of_classes = 2):
             smallest_H = this_H
             chosen_att = att
     
-    return chosen_att
+    info_gain = current_entropy - smallest_H
+    # print(f"Chosen attribute: {chosen_att}, Info Gain: {info_gain}")
+
+    return chosen_att, info_gain
 
 def remove_best_att_from_data(data,best_att):
 
