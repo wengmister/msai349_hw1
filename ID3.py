@@ -95,16 +95,17 @@ def prune(node: Node, examples):
   # Evaluate accuracy after pruning
   post_pruning_node = node.get_root()
   pruned_accuracy = test(post_pruning_node, examples)
-  print(f"Pruned accuracy: {pruned_accuracy}, Current accuracy: {current_accuracy}")
+  # print(f"Pruned accuracy: {pruned_accuracy}, Current accuracy: {current_accuracy}")
 
   # If pruning reduces accuracy, revert the changes
   if pruned_accuracy < current_accuracy:
       node.is_leaf = original_is_leaf
       node.label = original_label
       node.children = original_children
-      print("Reverted node: ", node.attribute)
+      # print("Reverted node: ", node.attribute)
   else:
-      print("Pruned node: ", node.attribute)
+      # print("Pruned node: ", node.attribute)
+      pass
     
 
 
