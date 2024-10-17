@@ -2,7 +2,7 @@ from node import Node
 import parse
 from separate import *
 
-def ID3(examples: list, default = 0):
+def ID3(examples: list, default = 0, attributes_random_sample_ratio=1.0):
   '''
   Takes in an array of examples, and returns a tree (an instance of Node) 
   trained on the examples.  Each example is a dictionary of attribute:value pairs,
@@ -34,7 +34,7 @@ def ID3(examples: list, default = 0):
       return Node(label=majority_class, node_info_gain=0, is_leaf=True)
 
   # Find the best attribute to split on (we'll use information gain)
-  best_attribute, info_gain = find_best_attribute_to_split_on(examples, unique_class)
+  best_attribute, info_gain = find_best_attribute_to_split_on(examples, unique_class, random_ratio=attributes_random_sample_ratio)
   #If there is none, return the default one
   if (best_attribute == ""):
      return Node(label=default, node_info_gain = info_gain, is_leaf=True)
@@ -55,7 +55,7 @@ def ID3(examples: list, default = 0):
 
       # Remove the used attribute and recursively build child nodes
       new_data = remove_best_att_from_data(subset, best_attribute)
-      child = ID3(new_data, default=default)
+      child = ID3(new_data, default=default, attributes_random_sample_ratio=attributes_random_sample_ratio)
       child.value = value
       # Add the child node to the root
       root.add_child(child)

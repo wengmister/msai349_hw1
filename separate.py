@@ -1,5 +1,6 @@
 from parse import *
 from entropy import *
+import random
 
 def split_data_by_attribute(data,seperator_attribute):
     '''
@@ -15,7 +16,7 @@ def split_data_by_attribute(data,seperator_attribute):
         sep_att[row[seperator_attribute]].append(row)
     return sep_att
 
-def find_best_attribute_to_split_on(data, number_of_classes = 2):
+def find_best_attribute_to_split_on(data, number_of_classes = 2, random_ratio = 1.0):
     """
     Identifies the attribute that minimizes entropy for data splitting.
 
@@ -30,6 +31,10 @@ def find_best_attribute_to_split_on(data, number_of_classes = 2):
     #Assume the all of the examples has all of the attributes (even if unkown)
     attribue_list = list(data[0].keys())
     attribue_list.remove("Class")
+
+    # Randomly select a subset of attributes to consider
+    subset_size = max(1, int((len(attribue_list) * random_ratio)))
+    attribue_list = random.sample(attribue_list, subset_size)
 
     if (len(attribue_list) == 1): return attribue_list[0], 0
 
