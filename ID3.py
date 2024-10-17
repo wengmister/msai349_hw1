@@ -57,6 +57,7 @@ def ID3(examples: list, default = 0):
       new_data = remove_best_att_from_data(subset, best_attribute)
       child = ID3(new_data, default=default)
       child.value = value
+      child.parent = root
       # Add the child node to the root
       root.add_child(child)
 
@@ -71,29 +72,6 @@ def prune(node: Node, examples):
   - Reduced error pruning, remove the node and replace with leaf to see if it improves validation accuracy
   '''
 
-  def get_most_common_label(dataset):
-      """
-      Finds the most common class label in the dataset without using Counter.
-      """
-      label_count = {}
-      for example in dataset:
-          label = example['Class']
-          if label in label_count:
-              label_count[label] += 1
-          else:
-              label_count[label] = 1
-      
-      # Find the label with the maximum count
-      most_common_label = None
-      max_count = 0
-      for label, count in label_count.items():
-          if count > max_count:
-              max_count = count
-              most_common_label = label
-      
-      return most_common_label
-
-
   # Post-order traversal: prune children first
   if node.is_leaf:
     return
@@ -102,7 +80,9 @@ def prune(node: Node, examples):
         prune(child, examples)
 
   # Evaluate accuracy before pruning
-  current_accuracy = test(node, examples)
+
+  pre_pruning_node = node.get_root()
+  current_accuracy = test(pre_pruning_node, examples)
   original_children = node.children
   original_is_leaf = node.is_leaf
   original_label = node.label
@@ -113,7 +93,8 @@ def prune(node: Node, examples):
   node.children = []
 
   # Evaluate accuracy after pruning
-  pruned_accuracy = test(node, examples)
+  post_pruning_node = node.get_root()
+  pruned_accuracy = test(post_pruning_node, examples)
   print(f"Pruned accuracy: {pruned_accuracy}, Current accuracy: {current_accuracy}")
 
   # If pruning reduces accuracy, revert the changes
@@ -160,16 +141,38 @@ def evaluate(node, example):
           return evaluate(child, example) 
   
 
+def get_most_common_label(dataset):
+      """
+      Finds the most common class label in the dataset without using Counter.
+      """
+      label_count = {}
+      for example in dataset:
+          label = example['Class']
+          if label in label_count:
+              label_count[label] += 1
+          else:
+              label_count[label] = 1
+      
+      # Find the label with the maximum count
+      most_common_label = None
+      max_count = 0
+      for label, count in label_count.items():
+          if count > max_count:
+              max_count = count
+              most_common_label = label
+      
+      return most_common_label
+
 
 def main():
   VALIDATION = True
 
-  data = parse.parse("house_votes_84.data")
-  training_data = data[:300]        # First 300 rows
-  validation_data = data[300:400]   # Next 100 rows
-  testing_data = data[400:] 
+  # data = parse.parse("house_votes_84.data")
+  # training_data = data[:250]        # First 300 rows
+  # validation_data = data[250:400]   # Next 100 rows
+  # testing_data = data[400:] 
 
-  # training_data = parse.parse("cars_train.data")
+  training_data = parse.parse("cars_train.data")
 
   print("Training...")
   result = ID3(training_data, default="republican")
@@ -178,20 +181,20 @@ def main():
   print("")
 
   if VALIDATION == True:
-    # validation_data = parse.parse("cars_valid.data")
+    validation_data = parse.parse("cars_valid.data")
     prune(result, validation_data)
     print("")
     result.print_tree()
 
     print("Testing pruned tree")
-    # testing_data = parse.parse("cars_test.data")
+    testing_data = parse.parse("cars_test.data")
     accuracy = test(result, testing_data)
     print("Accuracy: "+str(accuracy))
 
   else:
 
     print("Testing...")
-    # testing_data = parse.parse("cars_test.data")
+    testing_data = parse.parse("cars_test.data")
     accuracy = test(result, testing_data)
     print("Accuracy: "+str(accuracy))
 

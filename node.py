@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, node_info_gain, attribute=None, value=None, label=None, is_leaf=False):
+    def __init__(self, node_info_gain, attribute=None, value=None, label=None, is_leaf=False, parent=None):
         """
         Initialize a node in the decision tree.
 
@@ -15,6 +15,7 @@ class Node:
         self.value = value            # The value of the parent node's attribute (for children)
         self.is_leaf = is_leaf        # Whether the node is a leaf node
         self.node_info_gain = node_info_gain
+        self.parent = parent
 
     def add_child(self, child_node):
         """
@@ -24,6 +25,15 @@ class Node:
         - child_node (Node): The child node to add.
         """
         self.children.append(child_node)
+
+    def get_root(self):
+        """
+        Return the root node of the tree.
+        """
+        current_node = self
+        while current_node.parent is not None:
+            current_node = current_node.parent
+        return current_node
 
     def __repr__(self):
       """
