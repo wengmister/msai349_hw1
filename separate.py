@@ -29,18 +29,19 @@ def find_best_attribute_to_split_on(data, number_of_classes = 2, random_ratio = 
     chosen_att = ""
 
     #Assume the all of the examples has all of the attributes (even if unkown)
-    attribue_list = list(data[0].keys())
-    attribue_list.remove("Class")
+    attribute_list = list(data[0].keys())
+    attribute_list.remove("Class")
 
     # Randomly select a subset of attributes to consider
-    subset_size = max(1, int((len(attribue_list) * random_ratio)))
-    attribue_list = random.sample(attribue_list, subset_size)
+    subset_size = max(1, int((len(attribute_list) * random_ratio)))
+    attribute_list = random.sample(attribute_list, subset_size)
 
-    if (len(attribue_list) == 1): return attribue_list[0], 0
+
+    if (len(attribute_list) == 1): return attribute_list[0], 0
 
     current_entropy = calculate_entropy(data, number_of_classes)
 
-    for att in attribue_list:
+    for att in attribute_list:
         
         seg_data = split_data_by_attribute(data,att)
 
