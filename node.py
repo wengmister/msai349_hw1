@@ -14,8 +14,8 @@ class Node:
         self.attribute = attribute    # The feature to split on
         self.value = value            # The value of the parent node's attribute (for children)
         self.is_leaf = is_leaf        # Whether the node is a leaf node
-        self.node_info_gain = node_info_gain
-        self.parent = parent
+        self.node_info_gain = node_info_gain # information gain of this node
+        self.parent = parent # The parent node
 
     def add_child(self, child_node):
         """
