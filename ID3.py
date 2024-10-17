@@ -84,8 +84,12 @@ def test(node, examples):
     if(gt == predict):
       num_success_prediction += 1
     num_prediction += 1
-  accuracy = num_success_prediction / num_prediction
-  return accuracy
+  if(num_prediction != 0):
+    accuracy = num_success_prediction / num_prediction
+    return accuracy
+  else:
+    print("test(node, examples): No prediction")
+    return 0
 
 
 def evaluate(node, example):
