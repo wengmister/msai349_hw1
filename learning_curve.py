@@ -3,7 +3,7 @@ from random import sample
 import numpy as np
 from matplotlib import pyplot as plt
 
-def get_learning_curve_data(examples_sizes,train_data,test_data,prune = False,default = 0):
+def get_learning_curve_data(examples_sizes,train_data,test_data,valid_data,prune = False,default = 0):
     '''
     examples_sizes (np.array) - a range of the example sizes
     test_data (dictionary) - The test data to test on.
@@ -17,7 +17,7 @@ def get_learning_curve_data(examples_sizes,train_data,test_data,prune = False,de
         #Train the tree
         this_tree = ID3.ID3(this_examples,default=default)
         if (prune):
-            this_tree = ID3.prune(this_tree,this_examples)
+            ID3.prune(this_tree,valid_data)
         acc_values.append(ID3.test(node= this_tree,examples=test_data))
     
     return np.array(acc_values)
