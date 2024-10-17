@@ -19,7 +19,7 @@ def ID3(examples: list, default = 0):
 
   #Check homogeneity
   if classes.count(classes[0]) == len(classes):
-      return Node(label=classes[0], node_info_gain= 0, value = classes[0] ,is_leaf=True)
+      return Node(label=classes[0], value = classes[0] ,is_leaf=True)
   
   #Get a list of attributes
   attributes = list(examples[0].keys())
@@ -38,7 +38,7 @@ def ID3(examples: list, default = 0):
   #If there is none, return the default one
   if (best_attribute == ""):
      return Node(label=default, node_info_gain = info_gain, is_leaf=True)
-  root = Node(attribute=best_attribute, node_info_gain=info_gain)
+  root = Node(attribute=best_attribute)
   # root.print_tree()
    
   # create a set of all possible values for the best attribute to split on
@@ -63,23 +63,39 @@ def ID3(examples: list, default = 0):
   return root
 
 
-def prune(node: Node, examples):
+def prune(node: Node, examples , root = None):
   '''
   Takes in a trained tree and a validation set of examples.  Prunes nodes in order
   to improve accuracy on the validation data;
   Strategy chosen:
   - Reduced error pruning, remove the node and replace with leaf to see if it improves validation accuracy
   '''
+  if (root == None): root = node
   # If leaf - stopping condition
   if (node.is_leaf) : return
 
+  this_acc = test(root,examples)
   # Check if making the node a leaf makes the accuracy better
   ## Find the most common label
-  common_label = get_most_common_label()
-  
-  
-  
+  for i in range(len(node.children)):
+    
+    child = node.children[i]
 
+    if (child.is_leaf): continue
+
+    copy = child.copy()
+    common_label = get_most_common_label(child)
+    leaf = Node(label = common_label , is_leaf= True)
+    node.children[i] = leaf
+
+    ## Check acc
+    acc = test(root,examples)
+    if (acc < this_acc):
+       #revert
+       node.children[i] = copy
+    else:
+       print("!!!!")
+      
 
 def test(node, examples):
   ''' 

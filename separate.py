@@ -77,7 +77,7 @@ def get_most_common_label(node):
 
     # Find the most common one
     
-    most_common = labels_count.keys()[0]
+    most_common = list(labels_count.keys())[0]
     occ = labels_count[most_common]
 
     for label in labels_count.keys():
