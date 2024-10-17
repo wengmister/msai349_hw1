@@ -29,100 +29,6 @@ def random_subset(data, size):
     return random.choices(copied_data, k=size)
 
 
-def find_best_attribute_to_split_on_random_forest(data, number_of_classes = 2):
-    smallest_H = 1
-    chosen_att = ""
-
-    #Assume the all of the examples has all of the attributes (even if unkown)
-    attribue_list = list(data[0].keys())
-    attribue_list.remove("Class")
-
-    # Randomly select a subset of attributes to consider
-    subset_size = max(1, int((len(attribue_list) * RANDOM_SAMPLE_ATTRIBUTES_RATIO)))
-    attribue_list = random.sample(attribue_list, subset_size)
-
-    if (len(attribue_list) == 1): return attribue_list[0], 0
-
-    current_entropy = calculate_entropy(data, number_of_classes)
-
-    for att in attribue_list:
-        
-        seg_data = split_data_by_attribute(data,att)
-
-        this_H = 0.0
-        for att_type in seg_data.keys():
-            this_H += 1.0*calculate_entropy(seg_data[att_type], number_of_classes) * len(seg_data[att_type])/len(data)
-
-        if(this_H < smallest_H):
-            smallest_H = this_H
-            chosen_att = att
-    
-    info_gain = current_entropy - smallest_H
-    # print(f"Chosen attribute: {chosen_att}, Info Gain: {info_gain}")
-
-    return chosen_att, info_gain
-
-
-def ID3_random_forest(examples: list, default = 0):
-    '''
-    Takes in an array of examples, and returns a tree (an instance of Node) 
-    trained on the examples.  Each example is a dictionary of attribute:value pairs,
-    and the target class variable is a special attribute with the name "Class".
-    Any missing attributes are denoted with a value of "?"
-
-    default - Default class
-    '''
-    # get a list of all the class labels
-    classes = []
-    for row in examples:
-        classes.append(row['Class'])
-    unique_class = len(set(classes))
-
-    #Check homogeneity
-    if classes.count(classes[0]) == len(classes):
-        return Node(label=classes[0], node_info_gain= 0, value = classes[0] ,is_leaf=True)
-    
-    #Get a list of attributes
-    attributes = list(examples[0].keys())
-
-    # Remove the last attribute (class label)
-    attributes.remove('Class')
-
-    # If no attributes are left, return a leaf node with the majority class
-    if len(attributes) == 0:
-        majority_class = max(set(classes), key=classes.count)
-        return Node(label=majority_class, node_info_gain=0, is_leaf=True)
-
-    # Find the best attribute to split on (we'll use information gain)
-    best_attribute, info_gain = find_best_attribute_to_split_on_random_forest(examples, unique_class)
-    #If there is none, return the default one
-    if (best_attribute == ""):
-        return Node(label=default, node_info_gain = info_gain, is_leaf=True)
-    root = Node(attribute=best_attribute, node_info_gain=info_gain)
-    # root.print_tree()
-    
-    # create a set of all possible values for the best attribute to split on
-    attribute_values = set()
-    for row in examples:
-        attribute_values.add(row[best_attribute])
-
-    for value in attribute_values:
-        # find matching examples with best attribute = value
-        subset = []
-        for row in examples:
-            if row[best_attribute] == value:
-                subset.append(row)
-
-        # Remove the used attribute and recursively build child nodes
-        new_data = remove_best_att_from_data(subset, best_attribute)
-        child = ID3_random_forest(new_data, default=default)
-        child.value = value
-        # Add the child node to the root
-        root.add_child(child)
-
-    return root
-
-
 def test_forest(trees, examples):
     """
     Evaluates the accuracy of the entire forest by using majority voting among the individual trees.
@@ -169,7 +75,7 @@ def main_candy():
             # Train a tree
             # Bagging (Randomly select a subset of the data)
             training_data_after_bagging = random_subset(training_data, int(len(training_data)))
-            tree = ID3_random_forest(training_data_after_bagging, default="0")
+            tree = ID3(training_data_after_bagging, default="0", attributes_random_sample_ratio=RANDOM_SAMPLE_ATTRIBUTES_RATIO)
             trees.append(tree)
 
         # Test the random forest trees
@@ -205,7 +111,7 @@ def main_cars():
             # Train a tree
             # Bagging (Randomly select a subset of the data)
             training_data_after_bagging = random_subset(training_data, int(len(training_data)))
-            tree = ID3_random_forest(training_data_after_bagging, default="0")
+            tree = ID3(training_data_after_bagging, default="0", attributes_random_sample_ratio=RANDOM_SAMPLE_ATTRIBUTES_RATIO)
             trees.append(tree)
 
         # Test the random forest trees
