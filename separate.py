@@ -33,9 +33,9 @@ def find_best_attribute_to_split_on(data, number_of_classes = 2, random_ratio = 
     attribute_list.remove("Class")
 
     # Randomly select a subset of attributes to consider
-    subset_size = max(1, int((len(attribute_list) * random_ratio)))
-    attribute_list = random.sample(attribute_list, subset_size)
-
+    if(random_ratio != 1.0):
+        subset_size = max(1, int((len(attribute_list) * random_ratio)))
+        attribute_list = random.sample(attribute_list, subset_size)
 
     if (len(attribute_list) == 1): return attribute_list[0], 0
 
